@@ -77,3 +77,34 @@ This is a Node.js + Express backend for a Shopping Cart application, using MySQL
 *   **Repository Method for Quantity Check**: Checks if a product already exists in the user’s cart and retrieves quantity.
 
 *   **Inventory Control**: Prevents adding items to the cart if the requested quantity exceeds the available stock.
+
+---
+
+## API Endpoints
+
+### Auth Routes
+
+| Method | Endpoint             | Auth Required | Description                                                          |
+| ------ | -------------------- | ------------- | -------------------------------------------------------------------- |
+| POST   | `/api/auth/register` | No            | Register a new user with first name, last name, email, and password. |
+| POST   | `/api/auth/login`    | No            | Authenticate user and return JWT token.                              |
+
+### Product Routes
+
+| Method | Endpoint            | Auth Required | Description                     |
+| ------ | ------------------- | ----- | ------------------------------- |
+| POST   | `/api/products`     | Yes   | Create a new product.           |
+| GET    | `/api/products`     | No    | Get paginated list of products. |
+| GET    | `/api/products/:id` | No    | Get details of a product by ID. |
+| PUT    | `/api/products/:id` | Yes  | Update an existing product.     |
+| DELETE | `/api/products/:id` | Yes  | Delete a product.               |
+
+### Cart Routes
+
+| Method | Endpoint                         | Auth Required | Description                                                |
+|--------| -------------------------------- | ------------- | ---------------------------------------------------------- |
+| POST   | `/api/cart`                      | Yes           | Add an item to the cart (requires productId and quantity). |
+| PUT    | `/api/cart/increment/:productId` | Yes           | Increment quantity of a cart item.                         |
+| PUT    | `/api/cart/decrement/:productId` | Yes           | Decrement quantity of a cart item.                         |
+| DELETE | `/api/cart/:productId`           | Yes           | Remove an item from the cart.                              |
+| GET    | `/api/cart`                      | Yes           | Retrieve the authenticated user’s cart.                    |
