@@ -1,31 +1,44 @@
-version: '3.8'
+version: "3.8"
 
 services:
   app:
     build: .
-    container_name: shopping_cart_app
+    container_name: product_service
     ports:
       - "3000:3000"
-    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: password
+      DB_NAME: products
+    restart: always
     depends_on:
       - db
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   db:
     image: mysql:8.0
-    container_name: shopping_cart_db
+    container_name: product_db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: shopping_cart
-      MYSQL_USER: appuser
-      MYSQL_PASSWORD: apppassword
+      MYSQL_DATABASE: products
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   db_data:

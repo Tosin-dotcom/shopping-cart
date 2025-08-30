@@ -1,12 +1,13 @@
 const { status } = require('http-status');
 const { errorResponse } = require('../utils/response');
+const logger = require("../utils/logger");
 
 const validate = (schema) => {
   return (req, res, next) => {
     const { error } = schema.validate(req.body, { abortEarly: false });
 
     if (error) {
-      console.log(error)
+      logger.error(error)
       return res
       .status(status.BAD_REQUEST)
       .json(
