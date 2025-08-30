@@ -6,6 +6,20 @@ const {successResponse} = require("../utils/response");
 const {sign} = require("jsonwebtoken");
 
 
+/**
+ * Registers a new user.
+ *
+ * @async
+ * @function register
+ * @param {Object} params - User registration data.
+ * @param {string} params.firstName - The first name of the user.
+ * @param {string} params.lastName - The last name of the user.
+ * @param {string} params.email - The email address of the user.
+ * @param {string} params.password - The plain-text password of the user.
+ * @returns {Promise<Object>} A success response containing the newly created user's ID, name, and email.
+ * @throws {ApiError} If a user with the given email already exists.
+ */
+
 const register = async ({ firstName, lastName, email, password }) => {
 
   const existingUser = await userService.getUserByEmail(email);
@@ -20,6 +34,17 @@ const register = async ({ firstName, lastName, email, password }) => {
   );
 };
 
+
+/**
+ * Authenticates a user and generates a JWT token.
+ *
+ * @async
+ * @function login
+ * @param {string} email - The email address of the user attempting to log in.
+ * @param {string} password - The plain-text password to verify.
+ * @returns {Promise<Object>} A success response containing user details and a signed JWT token.
+ * @throws {ApiError} If the email does not exist or the password is incorrect.
+ */
 const login = async (email, password) => {
   const user = await userService.getUserByEmail(email);
   if (!user) {

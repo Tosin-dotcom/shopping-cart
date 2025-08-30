@@ -5,11 +5,13 @@ const { successResponse } = require('../utils/response');
 
 const PRODUCT_NOT_FOUND = 'Product not found';
 
-
 const createProduct = async (productData) => {
   const product =  await productRepository.createProduct(productData);
   return successResponse(product, 'Product created');
 };
+
+
+
 
 const getAllProducts = async (page, pageSize) => {
   const products = await productRepository.getAllProducts(page, pageSize);
